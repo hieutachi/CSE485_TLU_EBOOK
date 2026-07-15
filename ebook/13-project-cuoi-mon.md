@@ -134,7 +134,9 @@ Request ─► Middleware Auth ─► Middleware Role ─► Controller ─► P
 
 Các bạn đã có đủ “bản đồ” từ PHP thuần đến Laravel Dashboard. Project không phải để nhồi thêm framework — mà để **chứng minh** bạn thiết kế được dữ liệu, tách được trách nhiệm, và hoàn thiện CRUD có quan hệ.
 
-Hãy làm các phiếu học tập (bản do giảng viên phát hành) để củng cố từng phần trước khi (hoặc song song khi) làm Project.
+Trước Project, hoàn thành chuỗi **12 phiếu MiniShop** — đặc biệt [Phiếu 12](./worksheets/phieu-12-dashboard-crud.md) (CRUD đủ 2 bảng + `belongsTo`). Project nhóm là mở rộng cùng pattern sang nhiều bảng hơn.
+
+→ [Mục lục phiếu](./worksheets/README.md)
 
 ---
 

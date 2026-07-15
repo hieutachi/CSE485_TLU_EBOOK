@@ -3,7 +3,7 @@
 > **Thời lượng gợi ý:** 3–4 giờ tự học  
 > **Tiên quyết:** Buổi 1 (biến, mảng, toán tử)  
 > **Kết quả đầu ra:** Viết được if/switch/vòng lặp, hàm tái sử dụng, tách file bằng require/include  
-> **Phiếu học tập liên quan:** Phiếu 2
+> **Phiếu học tập liên quan:** [Phiếu 02](./worksheets/phieu-02-cau-truc-ham.md) — chuỗi MiniShop
 
 ---
 
@@ -425,7 +425,16 @@ Tách file:   require_once / include_once
 - [ ] Tách hàm ra file riêng, `require_once` thành công
 - [ ] Hoàn thành bài giỏ hàng mục 8
 
-**Cầu nối Buổi 3:** Gom dữ liệu + hành vi thành **Class/Object**, nhận dữ liệu từ trình duyệt (GET/POST) và lưu trạng thái bằng Session/Cookie.
+## 11. Bài tập trên lớp & về nhà (chuỗi MiniShop)
+
+| Phần | Làm gì | Chi tiết |
+|------|--------|----------|
+| **Trên lớp** | `helpers.php`: lineTotal, inventoryValue, findBySku, stockLevel… | [Phiếu 02 — mục 2](./worksheets/phieu-02-cau-truc-ham.md) |
+| **Về nhà** | Lọc `?category_id=`, báo cáo 3 DM (đáp án sẵn trong phiếu), rank kho | [Phiếu 02 — mục 3](./worksheets/phieu-02-cau-truc-ham.md) |
+
+**Cầu nối Buổi 3:** Đưa logic hàm vào **Class/Object**, thêm **Session login admin** — vẫn MiniShop.
+
+→ [Buổi 3](./03-buoi-03-oop-session.md) · [Phiếu 03](./worksheets/phieu-03-oop-session.md)
 
 ---
 

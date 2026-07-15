@@ -3,7 +3,7 @@
 > **Thời lượng gợi ý:** 4 giờ tự học  
 > **Tiên quyết:** Buổi 4 (PDO CRUD categories)  
 > **Kết quả đầu ra:** Tái cấu trúc CRUD thành Model / Controller / View riêng  
-> **Phiếu học tập liên quan:** Phiếu 6
+> **Phiếu học tập liên quan:** [Phiếu 05](./worksheets/phieu-05-mvc-mini.md) — chuỗi MiniShop
 
 ---
 
@@ -376,7 +376,16 @@ categories.php                 Model: SQL
 - [ ] View không `new PDO`
 - [ ] CRUD chạy qua `index.php?controller=category&action=...`
 
-**Cầu nối Buổi 6:** Laravel làm sẵn routing, Controllers, Blade Views, Eloquent Models — bạn sẽ **map** kiến thức MVC mini sang framework.
+## 8. Bài tập trên lớp & về nhà (chuỗi MiniShop)
+
+| Phần | Làm gì | Chi tiết |
+|------|--------|----------|
+| **Trên lớp** | Front controller + Model/Controller + list view | [Phiếu 05 — mục 2](./worksheets/phieu-05-mvc-mini.md) |
+| **Về nhà** | CRUD MVC đủ + flash Session + `ARCHITECTURE.md` | [Phiếu 05 — mục 3](./worksheets/phieu-05-mvc-mini.md) |
+
+**Cầu nối Buổi 6:** Sang **Laravel** — map MVC mini sang Route/Controller/View của MiniShop Admin.
+
+→ [Buổi 6](./06-buoi-06-laravel-khoi-dau.md) · [Phiếu 06](./worksheets/phieu-06-laravel-route.md)
 
 ---
 

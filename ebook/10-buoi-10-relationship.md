@@ -3,7 +3,7 @@
 > **Thời lượng gợi ý:** 3 giờ  
 > **Tiên quyết:** Buổi 9  
 > **Kết quả đầu ra:** Định nghĩa `hasMany` / `belongsTo`; dùng `with()` chống N+1  
-> **Phiếu học tập liên quan:** Phiếu 10–11
+> **Phiếu học tập liên quan:** [Phiếu 10](./worksheets/phieu-10-relationship.md) — chuỗi MiniShop
 
 ---
 
@@ -196,7 +196,16 @@ Product::with('category:id,name')->get();
 - [ ] Giải thích N+1 trên giấy
 - [ ] List products luôn dùng `with('category')`
 
-**Cầu nối Buổi 11:** Ghép Eloquent + Blade Layout thành trang Admin: **hiển thị bảng + form thêm mới + Validation**.
+## 10. Bài tập trên lớp & về nhà (chuỗi MiniShop)
+
+| Phần | Làm gì | Chi tiết |
+|------|--------|----------|
+| **Trên lớp** | Khai báo quan hệ + JSON `with` / `withCount` | [Phiếu 10 — mục 2](./worksheets/phieu-10-relationship.md) |
+| **Về nhà** | Đo N+1 + Admin products thật (paginate) | [Phiếu 10 — mục 3](./worksheets/phieu-10-relationship.md) |
+
+**Cầu nối Buổi 11:** Form **Create** Categories & Products trên Dashboard (validate + select DM).
+
+→ [Buổi 11](./11-buoi-11-dashboard-create.md) · [Phiếu 11](./worksheets/phieu-11-dashboard-create.md)
 
 ---
 

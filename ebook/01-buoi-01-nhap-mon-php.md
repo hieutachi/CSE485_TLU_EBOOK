@@ -2,7 +2,7 @@
 
 > **Thời lượng gợi ý:** 3–4 giờ tự học  
 > **Kết quả đầu ra:** Hiểu Client–Server, cài được môi trường, viết được script PHP với biến / kiểu dữ liệu / toán tử / mảng  
-> **Phiếu học tập liên quan:** Phiếu 1
+> **Phiếu học tập liên quan:** [Phiếu 01](./worksheets/phieu-01-php-co-ban.md) — chuỗi MiniShop
 
 ---
 
@@ -589,26 +589,24 @@ PHP cơ bản hôm nay:
 
 ---
 
-## 13. Bài tập về nhà (chuẩn bị Phiếu 1)
+## 13. Bài tập trên lớp & về nhà (chuỗi MiniShop)
 
-1. Tạo mảng chứa **5 sản phẩm** (mỗi sản phẩm có `ten`, `gia`, `so_luong`).
-2. Tính **tổng tiền** = `gia * so_luong` của từng sản phẩm, rồi tính tổng cả giỏ hàng.
-3. In kết quả ra HTML dưới dạng danh sách `<ul>` hoặc bảng `<table>` đơn giản.
+Toàn bộ lớp đi một đề tài xuyên suốt: **MiniShop** (danh mục + sản phẩm).
 
-> Chi tiết Input/Output và yêu cầu nộp bài (GitHub + video OBS) nằm ở **Phiếu học tập số 1** (theo bản phiếu giảng viên phát hành).
+| Phần | Làm gì | Chi tiết |
+|------|--------|----------|
+| **Trên lớp** | Catalog 4 sản phẩm + 3 danh mục (mảng) | [Phiếu 01 — mục 2](./worksheets/phieu-01-php-co-ban.md) |
+| **Về nhà (≥25')** | Đủ 8 SP, cột thành tiền, map tên DM, tổng **41380000** | [Phiếu 01 — mục 3](./worksheets/phieu-01-php-co-ban.md) |
+
+Nộp repo riêng + video OBS (camera mặt) theo box cuối phiếu.
 
 ---
 
 ## 14. Cầu nối sang Buổi 2
 
-Bạn đã biết **lưu dữ liệu** (biến, mảng). Buổi 2 sẽ dạy cách **ra quyết định và lặp lại**:
+Bạn đã có **dữ liệu catalog**. Buổi 2 biến các phép tính / lọc thành **hàm tái sử dụng** (`helpers.php`) và làm báo cáo theo danh mục — vẫn cùng 8 sản phẩm MiniShop.
 
-- If / Else / Switch → máy tính biết "nếu điểm ≥ 5 thì Đạt"
-- For / While / Foreach → in cả danh sách mà không copy-paste 50 lần
-- Function → đóng gói logic thành khối tái sử dụng
-- `require` / `include` → tách file cho dự án không còn là một file khổng lồ
-
-Khi bạn gõ **"Tiếp tục"**, chúng ta sẽ sang **Buổi 2: Cấu trúc điều khiển & Hàm**.
+→ Tiếp: [Buổi 2](./02-buoi-02-cau-truc-ham.md) · [Phiếu 02](./worksheets/phieu-02-cau-truc-ham.md)
 
 ---
 

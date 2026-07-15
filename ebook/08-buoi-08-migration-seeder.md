@@ -3,7 +3,7 @@
 > **Thời lượng gợi ý:** 3–4 giờ  
 > **Tiên quyết:** Buổi 6–7  
 > **Kết quả đầu ra:** Cấu hình `.env`; Migration 2 bảng quan hệ; Seeder + Faker sinh dữ liệu  
-> **Phiếu học tập liên quan:** Phiếu 9  
+> **Phiếu học tập liên quan:** [Phiếu 08](./worksheets/phieu-08-migration-seeder.md) — chuỗi MiniShop
 > **Thiết kế mẫu:** `categories` (1) — (n) `products`
 
 ---
@@ -122,8 +122,10 @@ return new class extends Migration
             $table->foreignId('category_id')
                 ->constrained('categories')
                 ->cascadeOnDelete(); // xóa category → xóa products thuộc nó
+            $table->string('sku', 30)->unique(); // chuỗi MiniShop (KB-01, MS-01…)
             $table->string('name', 150);
-            $table->unsignedInteger('price'); // VND, đơn vị đồng
+            $table->unsignedInteger('price'); // VND
+            $table->unsignedInteger('qty')->default(0);
             $table->text('description')->nullable();
             $table->timestamps();
         });
@@ -165,7 +167,7 @@ Tạm thời chỉ cần `$fillable` (chi tiết Eloquent ở Buổi 9–10):
 protected $fillable = ['name', 'description'];
 
 // app/Models/Product.php
-protected $fillable = ['category_id', 'name', 'price', 'description'];
+protected $fillable = ['category_id', 'sku', 'name', 'price', 'qty', 'description'];
 ```
 
 ---
@@ -231,11 +233,15 @@ class ProductSeeder extends Seeder
             return;
         }
 
-        for ($i = 0; $i < 50; $i++) {
+        // Khuyến nghị phiếu: seed trước 8 SP cố định (SKU chuỗi MiniShop),
+        // rồi random thêm — xem Phiếu 08. Ví dụ vòng Faker:
+        for ($i = 0; $i < 20; $i++) {
             Product::create([
                 'category_id' => $faker->randomElement($categoryIds),
+                'sku' => strtoupper($faker->unique()->bothify('FZ-##??')),
                 'name' => $faker->words(3, true),
-                'price' => $faker->numberBetween(100000, 30000000),
+                'price' => $faker->numberBetween(100000, 9000000),
+                'qty' => $faker->numberBetween(1, 15),
                 'description' => $faker->sentence(12),
             ]);
         }
@@ -316,7 +322,16 @@ Buổi 9 sẽ dùng Eloquent thay vì viết join thủ công.
 - [ ] Seed ≥ 4 categories và 50 products
 - [ ] Hiểu `migrate:fresh --seed` (và rủi ro xóa dữ liệu)
 
-**Cầu nối Buổi 9:** Thao tác CRUD bằng **Eloquent ORM** (All, Find, Create, Update, Delete).
+## 10. Bài tập trên lớp & về nhà (chuỗi MiniShop)
+
+| Phần | Làm gì | Chi tiết |
+|------|--------|----------|
+| **Trên lớp** | Migration 2 bảng + FK cascade | [Phiếu 08 — mục 2](./worksheets/phieu-08-migration-seeder.md) |
+| **Về nhà** | Seed 3 DM + 8 SP gốc + 20 Faker (=28) | [Phiếu 08 — mục 3](./worksheets/phieu-08-migration-seeder.md) |
+
+**Cầu nối Buổi 9:** Eloquent CRUD **cả 2 model** (lab JSON / HTTP).
+
+→ [Buổi 9](./09-buoi-09-eloquent.md) · [Phiếu 09](./worksheets/phieu-09-eloquent.md)
 
 ---
 

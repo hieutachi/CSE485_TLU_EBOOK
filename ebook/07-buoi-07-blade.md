@@ -3,7 +3,7 @@
 > **Thời lượng gợi ý:** 3–4 giờ  
 > **Tiên quyết:** Buổi 6  
 > **Kết quả đầu ra:** Master layout Admin Dashboard; `@extends` / `@section` / `@yield`; truyền biến ra View  
-> **Phiếu học tập liên quan:** Phiếu 8
+> **Phiếu học tập liên quan:** [Phiếu 07](./worksheets/phieu-07-blade-layout.md) — chuỗi MiniShop
 
 ---
 
@@ -317,7 +317,16 @@ public function index()
 - [ ] Dashboard / Products / Categories kế thừa layout
 - [ ] Form nào dùng POST đều có `@csrf` (sẵn sàng Buổi 11)
 
-**Cầu nối Buổi 8:** Layout đã có — cần **bảng thật** trong MySQL qua Migration + Seeder (`categories`, `products`).
+## 9. Bài tập trên lớp & về nhà (chuỗi MiniShop)
+
+| Phần | Làm gì | Chi tiết |
+|------|--------|----------|
+| **Trên lớp** | `layouts/admin` + 4 trang `@extends` | [Phiếu 07 — mục 2](./worksheets/phieu-07-blade-layout.md) |
+| **Về nhà** | Active menu, bảng skeleton, flash-demo | [Phiếu 07 — mục 3](./worksheets/phieu-07-blade-layout.md) |
+
+**Cầu nối Buổi 8:** Migration + Seeder **2 bảng** `categories` / `products` (đúng dữ liệu chuỗi + Faker).
+
+→ [Buổi 8](./08-buoi-08-migration-seeder.md) · [Phiếu 08](./worksheets/phieu-08-migration-seeder.md)
 
 ---
 

@@ -3,7 +3,7 @@
 > **Thời lượng gợi ý:** 3–4 giờ  
 > **Tiên quyết:** Buổi 11  
 > **Kết quả đầu ra:** CRUD Products (và Categories) hoàn chỉnh trên Dashboard  
-> **Phiếu học tập liên quan:** Phiếu 11
+> **Phiếu học tập liên quan:** [Phiếu 12](./worksheets/phieu-12-dashboard-crud.md) — chuỗi MiniShop
 
 ---
 
@@ -203,7 +203,16 @@ Bạn đã đi đủ đường:
 4. Layout admin thống nhất  
 5. Validation server-side  
 
-**Tiếp theo:** [Hướng dẫn Project cuối môn (Buổi 13–15)](./13-project-cuoi-mon.md)
+## 9. Bài tập trên lớp & về nhà — ĐÍCH CUỐI chuỗi MiniShop
+
+| Phần | Làm gì | Chi tiết |
+|------|--------|----------|
+| **Trên lớp** | Edit Category + thử Delete Product | [Phiếu 12 — mục 2](./worksheets/phieu-12-dashboard-crud.md) |
+| **Về nhà (≥30–40')** | CRUD **đủ cả 2 bảng** + `belongsTo` + `with()` + `FINAL.md` | [Phiếu 12 — mục 3](./worksheets/phieu-12-dashboard-crud.md) |
+
+Sau khi hoàn thành Phiếu 12, bạn đã **tự xử lý** bài toán Laravel: 2 bảng liên kết, CRUD Admin đầy đủ.
+
+**Tiếp theo (điểm mở rộng):** [Project cuối môn Buổi 13–15](./13-project-cuoi-mon.md) · [Mục lục phiếu](./worksheets/README.md)
 
 ---
 

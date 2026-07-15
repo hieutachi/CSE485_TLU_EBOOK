@@ -3,7 +3,7 @@
 > **Thời lượng gợi ý:** 3–4 giờ  
 > **Tiên quyết:** Buổi 5 (MVC mini)  
 > **Kết quả đầu ra:** Cài Laravel bằng Composer; hiểu cấu trúc thư mục; tạo Route + Controller cơ bản  
-> **Phiếu học tập liên quan:** Phiếu 7
+> **Phiếu học tập liên quan:** [Phiếu 06](./worksheets/phieu-06-laravel-route.md) — chuỗi MiniShop
 
 ---
 
@@ -269,7 +269,16 @@ php artisan about               # thông tin môi trường
 - [ ] 3 route `/home` `/about` `/contact` chạy qua `PageController`
 - [ ] Giải thích được vòng đời Request bằng sơ đồ
 
-**Cầu nối Buổi 7:** Ba trang đang lặp HTML nav — Blade Layout (`@extends`, `@section`, `@yield`) sẽ gom bố cục Admin Dashboard.
+## 11. Bài tập trên lớp & về nhà (chuỗi MiniShop)
+
+| Phần | Làm gì | Chi tiết |
+|------|--------|----------|
+| **Trên lớp** | Project Laravel + 4 route Admin có `name` | [Phiếu 06 — mục 2](./worksheets/phieu-06-laravel-route.md) |
+| **Về nhà** | Dashboard nhận stats giả 3/8/41380000 + lifecycle doc | [Phiếu 06 — mục 3](./worksheets/phieu-06-laravel-route.md) |
+
+**Cầu nối Buổi 7:** Gộp UI thành **layout Admin Blade** (sidebar MiniShop).
+
+→ [Buổi 7](./07-buoi-07-blade.md) · [Phiếu 07](./worksheets/phieu-07-blade-layout.md)
 
 ---
 

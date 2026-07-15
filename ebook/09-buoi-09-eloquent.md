@@ -3,7 +3,7 @@
 > **Thời lượng gợi ý:** 3 giờ  
 > **Tiên quyết:** Buổi 8 (đã có bảng + model)  
 > **Kết quả đầu ra:** CRUD bằng Eloquent; trả JSON để kiểm tra (chưa cần UI đầy đủ)  
-> **Phiếu học tập liên quan:** Phiếu 10
+> **Phiếu học tập liên quan:** [Phiếu 09](./worksheets/phieu-09-eloquent.md) — chuỗi MiniShop
 
 ---
 
@@ -63,8 +63,10 @@ class Product extends Model
 {
     protected $fillable = [
         'category_id',
+        'sku',
         'name',
         'price',
+        'qty',
         'description',
     ];
 
@@ -248,7 +250,16 @@ Model / Collection / JSON
 - [ ] Hiểu `$fillable`
 - [ ] Có route JSON đọc danh sách products
 
-**Cầu nối Buổi 10:** Lấy `product->category->name` đúng cách với `belongsTo` / `hasMany` và **Eager Loading `with()`** để tránh N+1.
+## 9. Bài tập trên lớp & về nhà (chuỗi MiniShop)
+
+| Phần | Làm gì | Chi tiết |
+|------|--------|----------|
+| **Trên lớp** | Lab routes Category: list/show/create | [Phiếu 09 — mục 2](./worksheets/phieu-09-eloquent.md) |
+| **Về nhà** | CRUD Product lab + chặn xóa Category còn SP | [Phiếu 09 — mục 3](./worksheets/phieu-09-eloquent.md) |
+
+**Cầu nối Buổi 10:** `belongsTo` / `hasMany` + `with()` — cột danh mục bằng **tên**.
+
+→ [Buổi 10](./10-buoi-10-relationship.md) · [Phiếu 10](./worksheets/phieu-10-relationship.md)
 
 ---
 

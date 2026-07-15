@@ -3,7 +3,7 @@
 > **Thời lượng gợi ý:** 4 giờ tự học  
 > **Tiên quyết:** Buổi 1–2  
 > **Kết quả đầu ra:** Viết được Class/Object cơ bản; nhận GET/POST; dùng Session/Cookie  
-> **Phiếu học tập liên quan:** Phiếu 3, Phiếu 4
+> **Phiếu học tập liên quan:** [Phiếu 03](./worksheets/phieu-03-oop-session.md) — chuỗi MiniShop
 
 ---
 
@@ -421,7 +421,16 @@ An toàn: htmlspecialchars khi in; không tin dữ liệu form
 - [ ] Form POST đăng nhập ảo + chặn vào dashboard khi chưa login
 - [ ] Thêm item vào giỏ bằng Session
 
-**Cầu nối Buổi 4:** Đưa dữ liệu thật vào **MySQL** và thao tác CRUD bằng **PDO**.
+## 11. Bài tập trên lớp & về nhà (chuỗi MiniShop)
+
+| Phần | Làm gì | Chi tiết |
+|------|--------|----------|
+| **Trên lớp** | Class `Category` + `Product` (8 object) | [Phiếu 03 — mục 2](./worksheets/phieu-03-oop-session.md) |
+| **Về nhà** | Login Session `admin` / `MiniShop@03` + order Session | [Phiếu 03 — mục 3](./worksheets/phieu-03-oop-session.md) |
+
+**Cầu nối Buổi 4:** 3 danh mục MiniShop lên **MySQL** — CRUD PDO bảng `categories` (chưa làm products).
+
+→ [Buổi 4](./04-buoi-04-pdo-crud.md) · [Phiếu 04](./worksheets/phieu-04-pdo-categories.md)
 
 ---
 

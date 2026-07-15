@@ -3,7 +3,7 @@
 > **Thời lượng gợi ý:** 4 giờ tự học  
 > **Tiên quyết:** Buổi 1–3  
 > **Kết quả đầu ra:** Tạo bảng MySQL; CRUD một bảng bằng PDO (Prepared Statements)  
-> **Phiếu học tập liên quan:** Phiếu 5  
+> **Phiếu học tập liên quan:** [Phiếu 04](./worksheets/phieu-04-pdo-categories.md) — chuỗi MiniShop
 > **Ví dụ xuyên suốt:** Bảng `categories`
 
 ---
@@ -368,7 +368,16 @@ Luôn dùng ? hoặc :named — không nối chuỗi SQL
 - [ ] Thêm / xem / sửa / xóa được ít nhất 1 danh mục
 - [ ] Hiểu vì sao Prepared Statement chống SQL Injection
 
-**Cầu nối Buổi 5:** File `categories.php` đang **ôm hết** SQL + HTML + điều khiển. Ta sẽ tách thành **Model – View – Controller**.
+## 11. Bài tập trên lớp & về nhà (chuỗi MiniShop)
+
+| Phần | Làm gì | Chi tiết |
+|------|--------|----------|
+| **Trên lớp** | DB `minishop_cse485`, seed 3 DM, list + form thêm | [Phiếu 04 — mục 2](./worksheets/phieu-04-pdo-categories.md) |
+| **Về nhà** | CRUD đủ + bắt trùng tên UNIQUE | [Phiếu 04 — mục 3](./worksheets/phieu-04-pdo-categories.md) |
+
+**Cầu nối Buổi 5:** Tách CRUD categories sang **MVC mini** (cùng DB).
+
+→ [Buổi 5](./05-buoi-05-mvc-mini.md) · [Phiếu 05](./worksheets/phieu-05-mvc-mini.md)
 
 ---
 
