@@ -595,7 +595,7 @@ PHP cơ bản hôm nay:
 2. Tính **tổng tiền** = `gia * so_luong` của từng sản phẩm, rồi tính tổng cả giỏ hàng.
 3. In kết quả ra HTML dưới dạng danh sách `<ul>` hoặc bảng `<table>` đơn giản.
 
-> Chi tiết Input/Output và yêu cầu nộp bài (GitHub + video OBS) nằm ở **Phiếu học tập số 1** (Phần 2 của Ebook).
+> Chi tiết Input/Output và yêu cầu nộp bài (GitHub + video OBS) nằm ở **Phiếu học tập số 1** (theo bản phiếu giảng viên phát hành).
 
 ---
 

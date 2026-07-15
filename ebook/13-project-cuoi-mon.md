@@ -134,9 +134,7 @@ Request ─► Middleware Auth ─► Middleware Role ─► Controller ─► P
 
 Các bạn đã có đủ “bản đồ” từ PHP thuần đến Laravel Dashboard. Project không phải để nhồi thêm framework — mà để **chứng minh** bạn thiết kế được dữ liệu, tách được trách nhiệm, và hoàn thiện CRUD có quan hệ.
 
-Sang **Phần 2**, hãy làm lần lượt 11 Phiếu học tập để củng cố từng viên gạch trước khi (hoặc song song khi) làm Project.
-
-→ [Phiếu học tập](./worksheets/README.md)
+Hãy làm các phiếu học tập (bản do giảng viên phát hành) để củng cố từng phần trước khi (hoặc song song khi) làm Project.
 
 ---
 

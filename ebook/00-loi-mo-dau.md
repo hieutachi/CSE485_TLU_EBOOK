@@ -31,7 +31,7 @@ Cuốn Ebook này được soạn theo tinh thần **tự học có lộ trình*
 
 1. **Đọc lý thuyết** → vẽ lại sơ đồ ASCII bằng tay (không chỉ nhìn).
 2. **Gõ lại toàn bộ code** — đừng copy-paste. Cơ bắp nhớ lệnh quan trọng hơn mắt nhìn.
-3. **Làm Phiếu học tập** tương ứng (Phần 2) ngay sau mỗi buổi hoặc cụm buổi.
+3. **Làm Phiếu học tập** tương ứng (theo bản phiếu giảng viên phát hành) ngay sau mỗi buổi hoặc cụm buổi.
 4. **Nộp bài đúng quy định:** GitHub Repo riêng + video OBS có camera mặt.
 
 ### Công cụ bạn cần chuẩn bị

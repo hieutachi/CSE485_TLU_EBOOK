@@ -1,6 +1,8 @@
 # CSE485 – Ebook Backend PHP & Laravel
 
-Tài liệu tự học: **12 buổi lý thuyết–thực hành** + **Project cuối môn** + **11 Phiếu học tập**.
+Tài liệu tự học: **12 buổi lý thuyết–thực hành** + **Project cuối môn**.
+
+Phiếu học tập (bản gọn) do giảng viên phát hành riêng, không nằm trong repo này.
 
 ## Phần 0 — Giới thiệu
 
@@ -24,20 +26,14 @@ Tài liệu tự học: **12 buổi lý thuyết–thực hành** + **Project cu
 | 12 | Admin Dashboard — Update & Delete | [12-buoi-12-dashboard-update-delete.md](./12-buoi-12-dashboard-update-delete.md) |
 | 13–15 | Project cuối môn (nhóm) | [13-project-cuoi-mon.md](./13-project-cuoi-mon.md) |
 
-## Phần 2 — Phiếu học tập
-
-→ [worksheets/README.md](./worksheets/README.md)
-
 ## Lộ trình học nhanh
 
 ```
 PHP thuần (1–4) → MVC mini (5) → Laravel (6–10) → Dashboard CRUD (11–12) → Project nhóm (13–15)
-         ↑                              ↑
-    Phiếu 1–5                      Phiếu 6–11
 ```
 
 ## Gợi ý dùng tài liệu
 
-1. Đọc lần lượt từng buổi; gõ lại code, đừng chỉ đọc.
-2. Làm phiếu tương ứng ngay sau mỗi cụm buổi.
-3. Nộp GitHub (repo riêng từng phiếu) + video OBS có camera mặt.
+1. Đọc lần lượt từng buổi; tự viết lại code theo hướng dẫn.
+2. Làm phiếu học tập theo tài liệu riêng của giảng viên.
+3. Nộp GitHub (repo riêng từng bài) + video minh chứng theo yêu cầu môn học.
