@@ -2,25 +2,68 @@
 
 | | |
 |---|---|
-| **Buổi** | 7 |
-| **Thời lượng** | ≥ 45 phút |
-| **Repo** | `cse485-ms-07` (tiếp nối `cse485-ms-06` được) |
+| **Buổi** | 7 — đọc kèm [Buổi 07](../07-buoi-07-blade.md) |
+| **Thời lượng** | ≥ 45–60 phút |
+| **Repo** | `cse485-ms-07` (tiếp `cse485-ms-06`) |
 | **Nhận từ Phiếu 06** | 4 route Admin + stats giả |
-| **Mang sang Phiếu 08–12** | Cùng layout cho CRUD thật |
+| **Mang sang Phiếu 08–12** | Cùng layout cho Migration & CRUD thật |
 
 ### Chuẩn đầu ra (CLO)
 
-1. Có `layouts/admin.blade.php` với `@yield('content')` + sidebar MiniShop.  
-2. 4 trang `@extends` (dashboard/categories/products/about).  
-3. Flash demo hoạt động; active menu phân biệt Categories vs Products.
+1. Giải thích được Blade: `{{ }}` escape, `@extends` / `@section` / `@yield`.  
+2. Có `layouts/admin.blade.php` + sidebar MiniShop.  
+3. 4 trang con kế thừa layout; active menu phân biệt.  
+4. Flash demo hoạt động (`@csrf` sẵn sàng cho form sau này).
 
 ---
 
-## 1. Tóm tắt lý thuyết
+## 1. Lý thuyết — vì sao cần Layout?
 
-- `{{ }}` escape; `@csrf` cho form POST.
-- `@extends` / `@section` / `@yield` / `@include`.
-- Một layout master — nhiều trang con chỉ viết content.
+### 1.1. Đau ở P06
+
+Bốn view copy-paste cùng nav → sửa menu phải sửa 4 file.
+
+```
+P06: home/about/… mỗi file một nav
+P07: 1 layout + @yield('content') ← trang con chỉ viết phần giữa
+```
+
+### 1.2. Ba chỉ thị phải thuộc
+
+| Chỉ thị | Vai trò |
+|---------|---------|
+| `@extends('layouts.admin')` | Trang con kế thừa khung |
+| `@section('content') … @endsection` | Nhồi nội dung vào chỗ trống |
+| `@yield('content')` | Chỗ trống trong layout |
+
+```
+layouts/admin.blade.php
+   sidebar cố định
+   topbar @yield('page_heading')
+   main: @include flash + @yield('content')
+```
+
+### 1.3. `{{ $x }}` vs `{!! $x !!}`
+
+| Cú pháp | Ý nghĩa |
+|---------|---------|
+| `{{ $x }}` | Escape XSS — **mặc định dùng cái này** |
+| `{!! $x !!}` | Raw HTML — chỉ khi chắc chắn an toàn |
+
+### 1.4. `@csrf`
+
+Mọi form POST Laravel sau này (P11–P12) **bắt buộc** `@csrf`. P07 chuẩn bị chỗ flash + thói quen.
+
+### 1.5. Active menu (ý tưởng)
+
+```blade
+<a href="{{ route('admin.products.index') }}"
+   class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
+   San pham
+</a>
+```
+
+Video nộp phải thấy Categories và Products highlight **khác nhau**.
 
 ---
 
@@ -34,74 +77,48 @@ resources/views/admin/dashboard.blade.php
 resources/views/admin/categories/index.blade.php
 resources/views/admin/products/index.blade.php
 resources/views/admin/about.blade.php
-resources/views/partials/flash.blade.php   ← chỗ dành sẵn flash
+resources/views/partials/flash.blade.php
 ```
 
-### Layout phải có
+Layout có:
 
-1. Sidebar: brand **MiniShop**, link Dashboard / Categories / Products / About dùng `route()`.
-2. Topbar: `@yield('page_heading')`.
-3. Main: `@include('partials.flash')` + `@yield('content')`.
-4. `<title>@yield('title', 'MiniShop')</title>`.
+1. Brand **MiniShop** + link 4 route bằng `route()`  
+2. `@yield('title')`, `@yield('page_heading')`, `@yield('content')`  
+3. `@include('partials.flash')`  
+4. CSS đủ đọc (sidebar + content); mobile không vỡ hoàn toàn  
 
-CSS được phép viết trong layout (không bắt buộc CDN). Ưu tiên đọc được trên cả desktop và màn hẹp (sidebar xuống dưới hoặc scroll được).
-
-**Checkpoint:** đổi trang chỉ đổi content; sidebar giống nhau.
+**Checkpoint:** đổi URL chỉ đổi content; sidebar giống nhau.
 
 ---
 
-## 3. Bài về nhà (~25–30') — Component hoá & trạng thái UI
+## 3. Bài về nhà (~30')
 
-### Nhiệm vụ A — Active menu
+### A — Active menu
 
-Tự làm highlight link đang mở (một trong các cách):
-
-- so sánh `request()->routeIs('admin.products.*')`, hoặc  
-- truyền biến `$active` từ controller.
-
-Video phải thấy Categories và Products highlight khác nhau.
-
-### Nhiệm vụ B — Bảng skeleton Categories & Products
-
-Trên `categories/index` và `products/index`: tạo `<table>` với header đúng tương lai:
+### B — Bảng skeleton
 
 **Categories:** `ID | Name | Description | Actions`  
-**Products:** `ID | Name | Category | Price | Actions`
+**Products:** `ID | Name | Category | Price | Actions`  
 
-Body tạm: 2–3 hàng dữ liệu **hardcode** (ghi chú HTML comment `<!-- fake data Phiếu 07; thay Eloquent ở 09–11 -->`).
+2–3 hàng **fake** + HTML comment: `<!-- fake data P07; thay Eloquent P09–11 -->`
 
-### Nhiệm vụ C — Nút giả lập “Them moi”
+### C — Nút “Them moi” → trang create placeholder `@extends` layout
 
-Mỗi trang list có nút/link:
+### D — Flash demo
 
-- `route` tạm trỏ `#` hoặc trang `create` trống `@extends` layout, heading “Create Category/Product (coming)”.
+Route GET `/admin/flash-demo` → redirect dashboard `with('success', 'Layout OK — san sang Migration')`.
 
-### Nhiệm vụ D — Flash demo
-
-Trong DashboardController (hoặc route tạm):  
-`return redirect()->route('admin.dashboard')->with('success', 'Layout OK — san sang Migration');`  
-khi truy cập `/admin/flash-demo` (route GET chỉ để demo).  
-`partials/flash.blade.php` hiện message success.
-
-### Nhiệm vụ E — Checklist README tiến độ
-
-Đánh dấu:
-
-```
-- [x] Blade layout
-- [ ] Migration 2 bang
-```
+### E — README tiến độ: `[x] Blade layout`
 
 ---
 
-## 4. Nghiệm thu ≥ 45'
+## 4. Lỗi thường gặp
 
-| Việc | Thời gian gợi ý |
-|------|-----------------|
-| Layout + 4 trang extends | 15–20' |
-| Active menu + bảng skeleton | 15' |
-| Flash demo + create placeholder | 10' |
-| Quay video + README | 5–10' |
+| Lỗi | Cách xử |
+|-----|---------|
+| Section không hiện | Quên `@endsection` / sai tên section |
+| Menu 404 | Sai `route()` name so với `web.php` |
+| CSS mất | Để style trong layout, không chỉ trang con |
 
 ---
 
@@ -111,8 +128,10 @@ khi truy cập `/admin/flash-demo` (route GET chỉ để demo).
 ╔══════════════════════════════════════════════════════════════╗
 ║  NỘP PHIẾU 07                                                ║
 ╠══════════════════════════════════════════════════════════════╣
-║  1. Repo: layout + 4 trang con + flash partial               ║
-║  2. Video: nhảy 4 menu (active rõ) + flash-demo              ║
-║  3. Zoom @yield/@section trong layout                        ║
+║  1. Repo: layout + 4 trang + flash partial                   ║
+║  2. Video: 4 menu (active rõ) + flash-demo                   ║
+║  3. Zoom @yield/@section — giải thích vì sao không copy nav  ║
 ╚══════════════════════════════════════════════════════════════╝
 ```
+
+**Cầu nối Phiếu 08:** layout đã có — tạo **2 bảng thật** `categories` / `products` bằng Migration + Seeder.

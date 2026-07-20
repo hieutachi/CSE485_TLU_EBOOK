@@ -1,6 +1,7 @@
 # Phần 2 — 12 Phiếu học tập (chuỗi xuyên suốt MiniShop)
 
-Mỗi phiếu gắn **1 buổi** (~45–60 phút). Bài **trên lớp** và **về nhà** nối tiếp.
+Mỗi phiếu gắn **1 buổi** (~45–60 phút). Bài **trên lớp** và **về nhà** nối tiếp.  
+Các phiếu đã được viết **đầy đủ giải thích** (lý thuyết + bước làm + lỗi thường gặp + EXPECT), đọc kèm file Buổi tương ứng trong `ebook/`.
 
 > **Đích cuối (Phiếu 12):** Laravel + `belongsTo` / `hasMany` + **CRUD đủ cả 2 bảng** trên Admin Dashboard.
 
@@ -23,20 +24,20 @@ P09–10  Eloquent CRUD + Relationship + chống N+1
 P11–12  Dashboard Create → ★ CRUD đủ 2 bảng
 ```
 
-| Phiếu | Buổi | Repo | Kết quả mang sang |
-|-------|------|------|-------------------|
-| [01](./phieu-01-php-co-ban.md) | 1 | `cse485-ms-01` | 8 SP + tổng 41380000 |
-| [02](./phieu-02-cau-truc-ham.md) | 2 | `cse485-ms-02` | helpers + báo cáo / filter |
-| [03](./phieu-03-oop-session.md) | 3 | `cse485-ms-03` | Class + login Session |
-| [04](./phieu-04-pdo-categories.md) | 4 | `cse485-ms-04` | CRUD PDO categories |
-| [05](./phieu-05-mvc-mini.md) | 5 | `cse485-ms-05` | MVC mini categories |
-| [06](./phieu-06-laravel-route.md) | 6 | `cse485-ms-06` | 4 route Admin + stats giả |
-| [07](./phieu-07-blade-layout.md) | 7 | `cse485-ms-07` | Layout Admin |
-| [08](./phieu-08-migration-seeder.md) | 8 | `cse485-ms-08` | DB 2 bảng, seed 3/28 |
-| [09](./phieu-09-eloquent.md) | 9 | `cse485-ms-09` | Eloquent lab CRUD |
-| [10](./phieu-10-relationship.md) | 10 | `cse485-ms-10` | belongsTo + with() |
-| [11](./phieu-11-dashboard-create.md) | 11 | `cse485-ms-11` | List + Create 2 bảng |
-| [12](./phieu-12-dashboard-crud.md) | 12 | `cse485-ms-12` | **CRUD đủ 2 bảng** |
+| Phiếu | Buổi | Repo | Trọng tâm giải thích trong phiếu |
+|-------|------|------|----------------------------------|
+| [01](./phieu-01-php-co-ban.md) | 1 | `cse485-ms-01` | Biến, mảng, map DM, tổng 41380000 |
+| [02](./phieu-02-cau-truc-ham.md) | 2 | `cse485-ms-02` | Hàm, if/foreach, báo cáo, stockLevel |
+| [03](./phieu-03-oop-session.md) | 3 | `cse485-ms-03` | Cấu trúc vs OOP, Session login |
+| [04](./phieu-04-pdo-categories.md) | 4 | `cse485-ms-04` | CSDL vs mảng, PDO, prepare, CRUD |
+| [05](./phieu-05-mvc-mini.md) | 5 | `cse485-ms-05` | MVC, whitelist, flash, map Laravel |
+| [06](./phieu-06-laravel-route.md) | 6 | `cse485-ms-06` | Lifecycle, named route, stats giả |
+| [07](./phieu-07-blade-layout.md) | 7 | `cse485-ms-07` | @extends/@yield, active menu, flash |
+| [08](./phieu-08-migration-seeder.md) | 8 | `cse485-ms-08` | Migration, FK, seed 3/28, fillable |
+| [09](./phieu-09-eloquent.md) | 9 | `cse485-ms-09` | Eloquent vs PDO, validate, chặn xóa DM |
+| [10](./phieu-10-relationship.md) | 10 | `cse485-ms-10` | belongsTo/hasMany, N+1, with() |
+| [11](./phieu-11-dashboard-create.md) | 11 | `cse485-ms-11` | Form Create, CSRF, stats thật |
+| [12](./phieu-12-dashboard-crud.md) | 12 | `cse485-ms-12` | CRUD đủ 2 bảng, FINAL.md |
 
 ## Quy định nộp bài (mọi phiếu)
 
@@ -48,7 +49,7 @@ P11–12  Dashboard Create → ★ CRUD đủ 2 bảng
 
 | Chủ đề | Quy ước |
 |--------|---------|
-| Tổng kho 8 SP CORE | **41380000** (không phải 41170000) |
+| Tổng kho 8 SP CORE | **41380000** |
 | Sau seed Faker (28 SP) | Không chấm cứng tổng kho; chấm count + 8 SKU gốc |
 | Xóa category (P09/P12) | **Chặn** nếu còn product |
 | Stats giả P06 | `3 / 8 / 41380000` |

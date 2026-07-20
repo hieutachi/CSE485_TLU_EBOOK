@@ -2,47 +2,93 @@
 
 | | |
 |---|---|
-| **Buổi** | 6 |
-| **Thời lượng** | ≥ 45 phút |
+| **Buổi** | 6 — đọc kèm [Buổi 06](../06-buoi-06-laravel-khoi-dau.md) |
+| **Thời lượng** | ≥ 45–60 phút |
 | **Repo** | `cse485-ms-06` |
-| **Nhận từ Phiếu 05** | Map MVC mini ↔ Laravel |
-| **Mang sang Phiếu 07** | Các route Admin sẽ gắn layout Blade |
+| **Nhận từ Phiếu 05** | Đã hiểu Front Controller + Controller + View |
+| **Mang sang Phiếu 07** | 4 route Admin sẽ gắn **Blade layout** |
+| **Stats giả (CORE)** | categories **3** / products **8** / inventory **41380000** |
 
 ### Chuẩn đầu ra (CLO)
 
-1. 4 named routes: `admin.dashboard|categories.index|products.index|about`.  
-2. Dashboard in đúng stats giả CORE: `3 / 8 / 41380000`.  
-3. README cài đặt + không commit `.env`.
+1. Tạo được project Laravel; giải thích `public/` là document root.  
+2. Có 4 **named routes** admin đúng URI.  
+3. Dashboard in đúng stats giả CORE (chuỗi MiniShop).  
+4. README cài đặt; **không** commit `.env`.
 
 ---
 
-## 1. Tóm tắt lý thuyết
+## 1. Lý thuyết — Laravel đứng ở đâu trong chuỗi?
 
-- `composer create-project`, `php artisan serve`, `route:list`.
-- `routes/web.php` → Controller → `view()`.
-- `public/` là document root; vòng đời Request Laravel.
+### 1.1. Từ MVC mini → framework
+
+```
+P05: tự viết router ?controller=&action=
+P06: routes/web.php + php artisan + Controller class
+P07: Blade layout
+P08: Migration = schema trong Git
+…
+P12: CRUD Dashboard đủ 2 bảng
+```
+
+Laravel **không thay** kiến thức MVC — nó làm sẵn phần lặp lại (routing, template, ORM…).
+
+### 1.2. Vòng đời request (ASCII nhớ)
+
+```
+Browser GET /admin
+    → public/index.php
+    → bootstrap + middleware
+    → routes/web.php khớp URI
+    → DashboardController@index
+    → return view(...)
+    → HTML về browser
+```
+
+### 1.3. Named route — vì sao bắt buộc?
+
+```php
+route('admin.products.index')  // → /admin/products
+```
+
+Đổi URL một chỗ trong `web.php` — mọi link menu không gãy.  
+**Cấm** hardcode `/admin/products` rải khắp view nếu đã có `name()`.
+
+### 1.4. Stats giả vs stats thật
+
+| Phiếu | Stats |
+|-------|-------|
+| **P06** | Hardcode `3 / 8 / 41380000` — nhớ chuỗi CORE |
+| **P11+** | `Category::count()`, `Product::count()`, `SUM(price*qty)` sống |
+
+Sau seed Faker (P08 = 28 SP), tổng kho **không** còn 41380000 — đó là bình thường.
+
+### 1.5. Artisan cần thuộc P06
+
+```bash
+composer create-project laravel/laravel minishop-laravel
+php artisan serve
+php artisan make:controller Admin/DashboardController
+php artisan route:list
+php artisan key:generate
+```
 
 ---
 
-## 2. Bài trên lớp (~20') — Project + 4 trang khung
+## 2. Bài trên lớp (~20') — 4 trang khung
 
-### Tạo project
+### Tạo project + controller
 
 ```bash
 composer create-project laravel/laravel minishop-laravel
 cd minishop-laravel
-php artisan serve
-```
-
-### Controller
-
-```bash
 php artisan make:controller Admin/DashboardController
 php artisan make:controller Admin/CategoryController
 php artisan make:controller Admin/ProductController
+php artisan serve
 ```
 
-### Route bắt buộc (đặt tên)
+### Route bắt buộc
 
 | Method | URI | name | Action |
 |--------|-----|------|--------|
@@ -51,85 +97,85 @@ php artisan make:controller Admin/ProductController
 | GET | `/admin/products` | `admin.products.index` | ProductController@index |
 | GET | `/admin/about` | `admin.about` | DashboardController@about |
 
-### View tạm (trên lớp)
-
-Mỗi trang hiện tiêu đề rõ:
+### View tạm — tiêu đề exact
 
 - Dashboard: `MiniShop Admin — Dashboard`
 - Categories: `MiniShop Admin — Categories (sap xay dung)`
 - Products: `MiniShop Admin — Products (sap xay dung)`
-- About: đoạn 3–4 câu mô tả chuỗi MiniShop (bạn đang xây gì tới buổi 12).
+- About: 3–4 câu mô tả chuỗi tới P12
 
-Menu link dùng `route('...')` (không hardcode path trong mọi chỗ).
+Menu dùng `route('...')`.
 
-**Checkpoint:** `php artisan route:list` thấy đủ 4 route name.
+**Checkpoint:** `php artisan route:list` thấy đủ 4 name.
 
 ---
 
-## 3. Bài về nhà (~25–30') — “Contract” dự án & truyền dữ liệu giả
+## 3. Bài về nhà (~30')
 
-### Nhiệm vụ A — Truyền thống kê giả xuống Dashboard
-
-Trong `DashboardController@index` tạo mảng:
+### A — Stats trên Dashboard
 
 ```php
 $stats = [
     'categories' => 3,
     'products' => 8,
-    'inventory_value' => 41380000, // nhớ chuỗi Phiếu 01
+    'inventory_value' => 41380000,
 ];
+return view('admin.dashboard', compact('stats'));
 ```
 
-View dashboard in 3 số này trong các thẻ/đoạn văn (chưa cần CSS đẹp).
+In rõ 3 số trên trang (có thể thêm `data-testid` nếu muốn sẵn autograder).
 
-### Nhiệm vụ B — README vận hành (chấm)
+### B — README vận hành
 
 ```text
 ## Cai dat
-- PHP version ...
+- PHP version …
 - composer install
 - cp .env.example .env && php artisan key:generate
 - php artisan serve
-## Tai khoan
-(chua co Auth — ghi ro)
 ## Tien do MiniShop
 - [x] Route admin
-- [ ] Blade layout (Phieu 07)
-- [ ] Migration 2 bang (Phieu 08)
-- [ ] CRUD 2 bang (Phieu 12)
+- [ ] Blade layout (P07)
+- [ ] Migration 2 bang (P08)
+- [ ] CRUD 2 bang (P12)
 ```
 
-### Nhiệm vụ C — Sơ đồ tự vẽ trong `docs/request-lifecycle.md`
+### C — `docs/request-lifecycle.md`
 
-ASCII: Browser → `public/index.php` → Route → Controller → View cho URL `/admin/products`.
+ASCII: Browser → `public/index.php` → Route → Controller → View cho `/admin/products`.
 
-### Nhiệm vụ D — Không commit secrets
+### D — Repo sạch
 
-- Có `.gitignore` chuẩn Laravel.
-- **Không** commit `.env`.
-- README nhắc tạo DB sẽ làm ở Phiếu 08.
+`.gitignore` chuẩn Laravel; **không** commit `.env` / `vendor` (nếu ignore vendor thì README phải có `composer install`).
 
 ---
 
-## 4. Output nghiệm thu
+## 4. Lỗi thường gặp
 
-| Hạng mục | OK khi |
-|----------|--------|
-| 4 URL mở được | 200, đúng tiêu đề |
-| `route:list` | Có 4 name admin.* |
-| Dashboard | Hiện stats 3 / 8 / 41380000 |
-| Repo sạch | Không `.env`, có README |
+| Lỗi | Cách xử |
+|-----|---------|
+| `composer not found` | Cài Composer, mở lại terminal |
+| 404 /admin | Sai `web.php` / chưa `route:list` |
+| View not found | Thiếu file trong `resources/views` |
+| Port 8000 bận | `php artisan serve --port=8080` |
 
 ---
 
-## 5. Box nộp bài
+## 5. EXPECT + nộp bài
+
+| Key | Value |
+|-----|------:|
+| 4 route names | đủ bảng mục 2 |
+| stats | 3 / 8 / 41380000 |
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
 ║  NỘP PHIẾU 06                                                ║
 ╠══════════════════════════════════════════════════════════════╣
-║  1. Repo Laravel (vendor co the ignore — README ghi install) ║
-║  2. Video: serve + mở 4 URL + route:list + zoom stats         ║
-║  3. Chỉ docs/request-lifecycle.md 45s                        ║
+║  1. Repo cse485-ms-06 + README cài đặt                       ║
+║  2. Video: serve + 4 URL + route:list + zoom stats           ║
+║  3. Giải thích: named route khác gì gõ URL cứng? Lifecycle?  ║
 ╚══════════════════════════════════════════════════════════════╝
 ```
+
+**Cầu nối Phiếu 07:** gộp 4 trang vào **một layout Admin** Blade (`@extends` / `@yield`).

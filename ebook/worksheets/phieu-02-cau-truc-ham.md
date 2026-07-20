@@ -2,43 +2,59 @@
 
 | | |
 |---|---|
-| **Buổi** | 2 |
-| **Thời lượng** | ≥ 45 phút |
+| **Buổi** | 2 — đọc kèm [Buổi 02](../02-buoi-02-cau-truc-ham.md) |
+| **Thời lượng** | ≥ 45–60 phút |
 | **Repo** | `cse485-ms-02` |
-| **Nhận từ Phiếu 01** | Dataset 8 SP ([CANONICAL-DATA](./CANONICAL-DATA.md)) — đã làm xong phần về nhà P01 |
-| **Mang sang Phiếu 03** | Các hàm tính toán / xếp hạng sẽ “đóng” vào method của class |
+| **Nhận từ Phiếu 01** | Dataset 8 SP ([CANONICAL-DATA](./CANONICAL-DATA.md)) — đã xong phần về nhà P01 |
+| **Mang sang Phiếu 03** | Logic `lineTotal` / `stockLevel` sẽ thành **method** trong class |
+| **Tổng kho CORE** | **41380000** |
 
 ### Chuẩn đầu ra (CLO)
 
-1. Đủ 5 hàm bắt buộc trong `helpers.php` (signature đúng).  
-2. `inventoryValue` = **41380000**.  
-3. Báo cáo 3 danh mục đúng count/value.  
-4. Filter `category_id=2` trả đúng 3 SKU chuột.  
-5. `stockLevel` / `rankInventory` đúng chuỗi exact.
+1. Viết đủ 5 hàm bắt buộc trong `helpers.php` (đúng trách nhiệm từng hàm).  
+2. Giải thích được vì sao tách hàm (tái sử dụng, tránh copy-paste).  
+3. `inventoryValue` = **41380000**; báo cáo 3 DM đúng count/value.  
+4. Filter `?category_id=2` → đúng 3 SKU chuột.  
+5. `stockLevel` / `rankInventory` trả **chuỗi exact** theo bảng chuẩn.
 
 ---
 
-## 1. Tóm tắt lý thuyết
+## 1. Lý thuyết — vì sao cần hàm & cấu trúc điều khiển?
 
-- `if/elseif`, `switch`, `foreach` (ưu tiên), `break/continue`.
-- Hàm: tham số, `return`, type hint (khuyến nghị).
-- Phạm vi biến: truyền tham số thay vì `global`.
-- `require_once` tách file bắt buộc.
-
----
-
-## 2. Bài trên lớp (~20') — Xây thư viện hàm
-
-### Cấu trúc thư mục
+### 1.1. Vị trí trong lộ trình
 
 ```
-minishop-02/
-├── data.php          ← copy dữ liệu 8 SP từ Phiếu 01 (đúng số liệu)
-├── helpers.php       ← chỉ chứa HÀM, không echo HTML dài
-└── index.php         ← require + gọi hàm + in kết quả
+P01: dữ liệu (mảng)     →  P02: quyết định + lặp + hàm  →  P03: đóng vào class
+     "có gì trong kho"       "tính / lọc / xếp hạng thế nào"
 ```
 
-### Hàm bắt buộc viết trong `helpers.php`
+Đây vẫn là **lập trình hướng cấu trúc**: dữ liệu ở `data.php`, xử lý ở `helpers.php`.
+
+### 1.2. Hàm là gì? (giải thích kỹ)
+
+**Hàm** = khối lệnh có tên, nhận **input (tham số)**, trả **output (`return`)** — hoặc chỉ làm việc phụ (in HTML).
+
+```
+Input $product ──► [ function lineTotal ] ──► Output int (thành tiền)
+```
+
+| Không dùng hàm | Dùng hàm |
+|----------------|----------|
+| Copy `price*qty` 10 chỗ | Sửa 1 chỗ trong `lineTotal` |
+| Dễ tính sai mỗi chỗ một kiểu | Một quy tắc nghiệp vụ thống nhất |
+| Khó test | Test từng hàm |
+
+**Quy tắc vàng P02:** view (`index.php`) **không** tự viết lại công thức `price*qty` / if tồn kho — phải gọi hàm.
+
+### 1.3. Cấu trúc điều khiển dùng trong phiếu
+
+| Cấu trúc | Dùng để |
+|----------|---------|
+| `if / elseif / else` | `stockLevel`, `rankInventory` |
+| `foreach` | Duyệt SP, xây báo cáo |
+| `$_GET[...] ??` | Lọc danh mục (có thể không có query) |
+
+### 1.4. Năm hàm bắt buộc — hợp đồng chữ ký
 
 ```text
 lineTotal(array $product): int
@@ -49,73 +65,91 @@ stockLevel(array $product): string
   // qty >= 5 → "Du"; qty >= 2 → "Sap het"; else → "Can nhap"
 ```
 
-### Việc trên lớp
+**Gợi ý cài đặt (không copy nguyên làm bài nộp nếu GV cấm — đây là hướng dẫn thuật toán):**
 
-1. Implement 5 hàm trên.
-2. Trong `index.php`: in bảng có thêm cột `Muc ton` = `stockLevel(...)`.
-3. Gọi `inventoryValue` in tổng (phải ra **41380000** nếu data đúng Phiếu 01).
+- `lineTotal`: `return $product['price'] * $product['qty'];`  
+- `inventoryValue`: `$sum = 0; foreach ... $sum += lineTotal($p); return $sum;`  
+- `findProductBySku`: foreach, nếu `$p['sku'] === $sku` thì `return $p`; hết vòng `return null;`  
+- `countByCategory`: đếm khi `$p['category_id'] === $categoryId`  
+- `stockLevel`: đúng thứ tự if `>= 5` trước, rồi `>= 2`
 
-**Checkpoint:** `findProductBySku($products, 'MN-02')` trả về đúng LG UltraFine.
-
----
-
-## 3. Bài về nhà (~25–30') — Bộ lọc & báo cáo
-
-### Nhiệm vụ A — Bộ lọc GET giả lập (chưa cần form đẹp)
-
-Trong `index.php` đọc `$_GET['category_id']` (nếu có):
-
-- Không có query → hiện tất cả 8 SP.
-- Có `?category_id=2` → chỉ sản phẩm Chuot (đúng **3** dòng: MS-01, MS-02, MS-03).
-
-Gợi ý: dùng `foreach` + `if`; chưa bắt buộc hàm riêng nhưng khuyến nghị:
+### 1.5. Hàm mở rộng về nhà
 
 ```text
 filterByCategory(array $products, ?int $categoryId): array
+rankInventory(int $totalValue): string
+  // < 15_000_000 → Nho; < 35_000_000 → Trung binh; else → Lon
+renderProductRows(array $products, array $categoryMap): void
 ```
 
-### Nhiệm vụ B — Báo cáo theo danh mục
+Với tổng **41380000** → `rankInventory` = **`Lon`**.
 
-In một bảng thứ hai **Bao cao theo danh muc**:
-
-| Danh muc | So SP | Tong gia tri |
-|----------|-------|--------------|
-| Ban phim | 3 | … |
-| Chuot | 3 | … |
-| Man hinh | 2 | … |
-
-Tự tính bằng vòng lặp + các hàm đã có.  
-**Đáp án kiểm tra:**
+### 1.6. Báo cáo theo danh mục — đáp án khóa
 
 | Danh muc | So SP | Tong gia tri |
-|----------|-------|--------------|
+|----------|------:|-------------:|
 | Ban phim | 3 | 17620000 |
 | Chuot | 3 | 8860000 |
 | Man hinh | 2 | 14900000 |
 
-### Nhiệm vụ C — Xếp hạng giá trị kho
-
-Viết hàm:
-
-```text
-rankInventory(int $totalValue): string
-  // < 15_000_000 → "Nho"
-  // < 35_000_000 → "Trung binh"
-  // else → "Lon"
-```
-
-In: `Quy mo kho: Lon` (vì 41380000).
-
-### Nhiệm vụ D — Danh sách HTML tái sử dụng
-
-Viết `renderProductRows(array $products, array $categoryMap): void` chỉ `echo` các `<tr>…</tr>`.  
-`index.php` không inject HTML từng ô rải rác ngoài hàm này (trừ header bảng).
+`17620000 + 8860000 + 14900000 = 41380000`.
 
 ---
 
-## 4. OUTPUT chuẩn (EXPECT)
+## 2. Bài trên lớp (~20') — Xây `helpers.php`
 
-### 4.1. `stockLevel` từng SKU (chấm exact)
+### Cấu trúc
+
+```
+minishop-02/
+├── data.php       ← copy 8 SP từ P01 / CANONICAL
+├── helpers.php    ← CHỈ hàm, không HTML dài
+└── index.php
+```
+
+### Việc trên lớp
+
+1. Implement 5 hàm bắt buộc.  
+2. Bảng sản phẩm có cột **Muc ton** = `stockLevel($p)`.  
+3. In `inventoryValue(...)` — phải **41380000**.  
+4. Checkpoint: `findProductBySku($products, 'MN-02')['name'] === 'LG UltraFine'`.
+
+**Cách kiểm tra nhanh trên lớp:**
+
+```php
+$p = findProductBySku($products, 'MN-02');
+var_dump($p['name'] ?? 'NOT FOUND');
+```
+
+---
+
+## 3. Bài về nhà (~30') — Lọc + báo cáo + rank + render
+
+### A — Filter GET
+
+- Không có `category_id` → 8 dòng.  
+- `?category_id=2` → đúng **MS-01, MS-02, MS-03**.  
+- Link HTML: `Tat ca` | `Ban phim` | `Chuot` | `Man hinh`.
+
+### B — Bảng báo cáo 3 DM
+
+Tự tính bằng vòng lặp + hàm đã có. Khớp bảng đáp án mục 1.6.
+
+### C — `Quy mo kho: Lon`
+
+### D — `renderProductRows`
+
+Chỉ `echo` các `<tr>…</tr>`. `index.php` không rải HTML ô từng biến lung tung ngoài hàm này (trừ `<thead>`).
+
+### E — Comment EXPECT
+
+```html
+<!-- MS_EXPECT inventory_value=41380000 rank=Lon -->
+```
+
+---
+
+## 4. OUTPUT chuẩn — `stockLevel` từng SKU
 
 | sku | qty | Muc ton |
 |-----|----:|---------|
@@ -128,24 +162,30 @@ Viết `renderProductRows(array $products, array $categoryMap): void` chỉ `ech
 | MN-01 | 2 | Sap het |
 | MN-02 | 1 | Can nhap |
 
-### 4.2. Trang phải có
+---
 
-1. Bảng sản phẩm (lọc GET) + cột mức tồn.  
-2. Bảng báo cáo 3 danh mục (số liệu mục 3B).  
-3. `Quy mo kho: Lon`.  
-4. Link: `Tat ca` | `Ban phim(?category_id=1)` | `Chuot(?category_id=2)` | `Man hinh(?category_id=3)`.  
-5. Comment: `<!-- MS_EXPECT inventory_value=41380000 rank=Lon -->`
+## 5. Lỗi thường gặp
+
+| Lỗi | Nguyên nhân | Cách xử |
+|-----|-------------|---------|
+| `Cannot redeclare function` | Require helpers 2 lần | `require_once` |
+| `stockLevel` sai MN-02 | Đảo thứ tự if (>=2 trước >=5) | Viết >=5 trước |
+| Báo cáo Ban phim sai | Cộng nhầm KB | Kiểm tra category_id = 1 |
+| Filter không chạy | Đọc sai `$_GET` | `(int) ($_GET['category_id'] ?? 0)` + phân nhánh null |
 
 ---
 
-## 5. Box nộp bài
+## 6. Box nộp bài
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
 ║  NỘP PHIẾU 02                                                ║
 ╠══════════════════════════════════════════════════════════════╣
-║  1. Repo có helpers.php với ĐỦ 5 hàm bắt buộc + hàm mở rộng  ║
-║  2. Video: lọc category_id=2 (3 dòng) + bảng báo cáo 3 dòng  ║
-║  3. Thuyết trình: vì sao tách helpers.php?                   ║
+║  1. Repo cse485-ms-02: helpers.php đủ hàm + index + data     ║
+║  2. Video: filter cat=2 (3 dòng) + báo cáo 3 DM + Lon        ║
+║  3. Thuyết trình: vì sao tách helpers.php? Hàm khác gì lệnh  ║
+║     viết thẳng trong index?                                  ║
 ╚══════════════════════════════════════════════════════════════╝
 ```
+
+**Cầu nối Phiếu 03:** cùng quy tắc `lineTotal`/`stockLevel` — chuyển thành **method** trong `class Product` (OOP).

@@ -2,27 +2,79 @@
 
 | | |
 |---|---|
-| **Buổi** | 5 |
-| **Thời lượng** | ≥ 45 phút |
+| **Buổi** | 5 — đọc kèm [Buổi 05](../05-buoi-05-mvc-mini.md) |
+| **Thời lượng** | ≥ 45–60 phút |
 | **Repo** | `cse485-ms-05` |
-| **Nhận từ Phiếu 04** | DB `minishop_cse485.categories` + hiểu CRUD PDO |
-| **Mang sang Phiếu 06** | Tư duy Route → Controller → View (Laravel sẽ thay front controller) |
+| **Nhận từ Phiếu 04** | DB `minishop_cse485.categories` + CRUD PDO “một cục” |
+| **Mang sang Phiếu 06** | Map tư duy Route → Controller → View sang Laravel |
+
+### Chuẩn đầu ra (CLO)
+
+1. Giải thích được MVC bằng sơ đồ + ví dụ request “Thêm category”.  
+2. Cấu trúc thư mục đúng contract; whitelist controller/action.  
+3. Model không echo HTML; View không `new PDO`.  
+4. CRUD đủ + flash Session một lần sau redirect.
 
 ---
 
-## 1. Tóm tắt lý thuyết
+## 1. Lý thuyết — vì sao phải tách MVC?
+
+### 1.1. Vấn đề file “ôm hết” (P04)
 
 ```
-Request → Front Controller → Controller → Model (PDO) → View (HTML)
+categories.php
+  ├── SQL PDO
+  ├── if POST → insert
+  └── echo <table>…
 ```
 
-- Model: SQL, không echo HTML.
-- Controller: điều phối, validate nhẹ, redirect.
-- View: HTML + biến, không `new PDO`.
+Sửa giao diện dễ đụng SQL; copy sang bảng khác phải nhân đôi cả file.
+
+### 1.2. MVC = ba trách nhiệm
+
+```
+Request ──► Controller ──► Model (PDO/SQL) ──► DB
+                │
+                └──► View (HTML) ──► Response
+```
+
+| Thành phần | Được làm | Không được làm |
+|------------|----------|----------------|
+| **Model** | CRUD, trả mảng | `echo` HTML |
+| **Controller** | Đọc input, gọi Model, chọn View, redirect | SQL dài / HTML dài |
+| **View** | HTML + escape | `db()` / `new PDO` |
+
+### 1.3. Front Controller
+
+Một cửa: `public/index.php?controller=category&action=index`
+
+**Whitelist** — không `new $_GET['x']` tùy ý:
+
+```php
+$map = ['category' => 'CategoryController'];
+$actions = ['index', 'create', 'edit', 'delete'];
+```
+
+### 1.4. So với Laravel (cầu nối miệng)
+
+| MVC Mini | Laravel |
+|----------|---------|
+| `index.php?controller&action` | `routes/web.php` |
+| `CategoryController` | `app/Http/Controllers/...` |
+| `CategoryModel` | `app/Models/Category` (Eloquent) |
+| `views/*.php` | Blade |
+
+### 1.5. Flash message
+
+```
+POST create OK → $_SESSION['flash']='...' → redirect index → in 1 lần → unset
+```
+
+Tránh F5 làm insert lại (PRG: Post/Redirect/Get).
 
 ---
 
-## 2. Bài trên lớp (~20') — Khung MVC chạy được Index
+## 2. Bài trên lớp (~20') — Khung chạy được Index
 
 ### Cấu trúc bắt buộc
 
@@ -34,7 +86,7 @@ minishop-05/
 ├── views/category/index.php
 ├── views/category/create.php
 ├── views/category/edit.php
-└── public/index.php          ← Front Controller (Document point)
+└── public/index.php
 ```
 
 URL mẫu:
@@ -43,80 +95,85 @@ URL mẫu:
 /public/index.php?controller=category&action=index
 /public/index.php?controller=category&action=create
 /public/index.php?controller=category&action=edit&id=1
-/public/index.php?controller=category&action=delete&id=1
 ```
 
-### Trên lớp phải xong
+### Việc trên lớp
 
-1. Whitelist controller/action (không `new $_GET['controller']` tùy ý không kiểm tra).
-2. `CategoryModel::all()` + `index` view chạy — list từ DB.
-3. Link “Them moi” mở form create (chưa cần submit cũng được nếu hết giờ — nhưng khuyến nghị xong store).
+1. Whitelist + nạp controller.  
+2. `CategoryModel::all()` + view index từ DB.  
+3. Link “Them moi” mở form (nên xong store nếu kịp).
 
-**Checkpoint:** mở thư mục thấy Model **không** chứa thẻ HTML; View **không** gọi `db()`.
+**Checkpoint GV:** Model không HTML; View không `new PDO`.
 
----
-
-## 3. Bài về nhà (~30') — CRUD qua MVC + sơ đồ
-
-### Nhiệm vụ A — Đủ Create / Edit / Delete
-
-Port đủ hành vi Phiếu 04 sang MVC:
-
-| Action | Method HTTP | Model |
-|--------|-------------|-------|
-| index | GET | all() |
-| create | GET form + POST store | create() |
-| edit | GET form + POST update | find(), update() |
-| delete | **POST** (khuyến nghị) hoặc GET + confirm | delete() |
-
-### Nhiệm vụ B — Flash message Session
-
-Sau create/update/delete: set `$_SESSION['flash']` rồi redirect index; view in 1 lần rồi `unset`.
-
-> **Delete:** ưu tiên form POST `action=delete` (đồng bộ thói quen CSRF/DELETE ở Laravel P11–P12). Nếu vẫn dùng GET, bắt buộc `confirm()` và ghi rõ trong README.
-
-### Nhiệm vụ C — File `ARCHITECTURE.md` (trong repo)
-
-Vẽ ASCII (copy & chỉnh) mô tả 1 request **Thêm category**:
+### Gợi ý chữ ký Model
 
 ```text
-Browser POST → index.php → CategoryController::create
-    → CategoryModel::create → MySQL
-    → redirect index → CategoryModel::all → View list
+all(): array
+find(int $id): ?array
+create(string $name, ?string $description): int
+update(int $id, string $name, ?string $description): bool
+delete(int $id): bool
 ```
-
-Viết thêm 5–7 dòng: so sánh với 1 file `categories.php` Phiếu 04.
-
-### Nhiệm vụ D — Kiểm thử tự làm
-
-Tạo checklist trong README (tick):
-
-- [ ] Thêm được
-- [ ] Sửa được
-- [ ] Xóa được
-- [ ] View không PDO
-- [ ] Model không echo
 
 ---
 
-## 4. Tiêu chí “MVC thật” (trọng số chấm)
+## 3. Bài về nhà (~30') — CRUD + kiến trúc
+
+### A — Đủ action
+
+| Action | HTTP | Model |
+|--------|------|-------|
+| index | GET | all() |
+| create | GET form + POST | create() |
+| edit | GET + POST | find(), update() |
+| delete | **POST** (khuyến nghị) | delete() |
+
+> Delete bằng GET dễ bị crawl/prefetch xóa nhầm — ưu tiên form POST + confirm.
+
+### B — Flash Session sau create/update/delete
+
+### C — `ARCHITECTURE.md`
+
+ASCII luồng Thêm category + 5–7 dòng so với 1 file P04.
+
+### D — Checklist README (tick)
+
+- [ ] Thêm / Sửa / Xóa được  
+- [ ] View không PDO / Model không echo  
+
+---
+
+## 4. Lỗi thường gặp
+
+| Lỗi | Nguyên nhân | Cách xử |
+|-----|-------------|---------|
+| 404 Controller | Sai whitelist / tên file | Khớp `CategoryController.php` |
+| Class not found | Sai đường dẫn require | Dùng `__DIR__` |
+| Session flash không hiện | Quên `session_start()` | Đầu front controller |
+| Vẫn SQL trong view | Copy thói P04 | Chuyển hết vào Model |
+
+---
+
+## 5. Rubric kiến trúc
 
 | Vi phạm | Hậu quả |
 |---------|---------|
-| SQL nằm trong View | Trượt phần kiến trúc |
-| HTML dài trong Model | Trượt phần kiến trúc |
-| Front controller không whitelist | Trừ điểm bảo mật cơ bản |
+| SQL trong View | Trượt kiến trúc |
+| HTML trong Model | Trượt kiến trúc |
+| Không whitelist | Trừ điểm bảo mật |
 
 ---
 
-## 5. Box nộp bài
+## 6. Box nộp bài
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
 ║  NỘP PHIẾU 05                                                ║
 ╠══════════════════════════════════════════════════════════════╣
-║  1. Repo cấu trúc đúng tên thư mục bắt buộc                  ║
-║  2. Video: CRUD qua URL ?controller=&action= + flash message ║
-║  3. Mở ARCHITECTURE.md + giải thích 60s                      ║
+║  1. Repo cse485-ms-05 đúng cấu trúc thư mục                  ║
+║  2. Video CRUD ?controller=&action= + flash                  ║
+║  3. ARCHITECTURE.md: MVC giải quyết đau gì so với P04?       ║
 ╚══════════════════════════════════════════════════════════════╝
 ```
+
+**Cầu nối Phiếu 06:** Laravel — Route/Controller/View sẵn; map MVC mini sang framework.
