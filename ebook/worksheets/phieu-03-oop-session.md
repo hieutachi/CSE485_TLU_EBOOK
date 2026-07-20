@@ -22,10 +22,24 @@
 
 ## 1. Tóm tắt lý thuyết
 
+### Hướng cấu trúc (Buổi 1–2) vs Hướng đối tượng (Buổi 3)
+
+| | Hướng cấu trúc | Hướng đối tượng (OOP) |
+|--|----------------|------------------------|
+| Tổ chức | Mảng + hàm rời (`helpers.php`) | Class gom dữ liệu + hành vi |
+| Thành tiền | `lineTotal($p)` | `$p->lineTotal()` |
+| Ai giữ quy tắc? | Lập trình viên nhớ gọi hàm đúng | Object tự biết method của mình |
+| MiniShop trước đây | `$products` + `stockLevel($p)` | `new Product(...)` + `$p->stockLevel()` |
+
+> Đọc kỹ mục **2** trong [Buổi 03](../03-buoi-03-oop-session.md) trước khi code phiếu này.
+
+### OOP + HTTP + Session cần nhớ
+
 - Class / Object / `__construct` / `$this`.
 - `public` vs `private` (encapsulation).
 - GET vs POST; Session `session_start()`.
 - Escape output; không tin dữ liệu form.
+- Credential nộp bài: `admin` / `MiniShop@03` — tổng kho CORE **41380000**.
 
 ---
 
@@ -107,8 +121,9 @@ methods:
 
 ## 4. Câu hỏi thuyết trình trong video (bắt buộc trả lời)
 
-1. Class và object khác nhau thế nào trong bài của bạn?  
-2. Vì sao dùng Session chứ không chỉ biến PHP thường?
+1. Hướng cấu trúc vs OOP: khác nhau chỗ nào? Ví dụ bằng `lineTotal($p)` và `$p->lineTotal()`.  
+2. Class và object khác nhau thế nào trong bài của bạn?  
+3. Vì sao dùng Session chứ không chỉ biến PHP thường?
 
 ---
 
